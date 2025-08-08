@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beach Bros Sharing - Invoice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #FF6B35, #F7931E, #00B4D8);
+            color: white;
+            padding: 30px;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .company-info {
+            text-align: right;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .invoice-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .bill-to, .invoice-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #00B4D8;
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #FF6B35;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 5px 0;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .package-details {
+            background: linear-gradient(135deg, #e3f2fd, #f0f8ff);
+            border: 2px solid #00B4D8;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .package-title {
+            font-size: 1.4em;
+            color: #FF6B35;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .package-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .package-item {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .equipment-info {
+            background: #fff3e0;
+            border: 1px solid #FFB74D;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .equipment-title {
+            color: #F57C00;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .invoice-table th {
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .invoice-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .invoice-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .invoice-table tr:hover {
+            background: #e3f2fd;
+        }
+
+        .total-row {
+            background: #00B4D8 !important;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .total-row td {
+            border: none;
+        }
+
+        .amount {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .calendar-btn {
+            background: linear-gradient(135deg, #00B4D8, #0077B6);
+            box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+        }
+
+        .calendar-btn:hover {
+            box-shadow: 0 6px 20px rgba(0, 180, 216, 0.4);
+        }
+
+        .text-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .text-btn:hover {
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .beach-icon {
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .invoice-details {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .package-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-btn {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+    </style>
+    <script>
+        function addToCalendar() {
+            // Create Google Calendar event
+            const eventDetails = {
+                text: 'Beach Package Delivery - Tommy Bahama for 6',
+                dates: '20250622T120000Z/20250622T130000Z', // June 22, 2025, 12:00-13:00 UTC
+                details: 'Beach Bros Sharing delivery at Ayres Costa Mesa. Tommy Bahama Beach Package for 6 people. Invoice #25074ACM',
+                location: 'Ayres Costa Mesa, Costa Mesa, CA',
+                sf: true,
+                output: 'xml'
+            };
+            
+            const params = new URLSearchParams(eventDetails);
+            const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&${params.toString()}`;
+            
+            window.open(calendarUrl, '_blank');
+        }
+
+        function sendTextToRunner() {
+            // Pre-filled text message for the delivery runner
+            const phoneNumber = '15551234567'; // Replace with actual runner's phone number
+            const message = `Hi! This is Kevin from Beach Bros Sharing invoice #25074ACM. Delivery scheduled for June 22nd at Ayres Costa Mesa. Tommy Bahama package for 6 people. Please confirm timing. Thanks!`;
+            
+            // Create SMS link
+            const smsUrl = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+            
+            // For mobile devices, this will open the SMS app
+            window.location.href = smsUrl;
+            
+            // Fallback: show the message for copy/paste
+            setTimeout(() => {
+                alert(`If SMS didn't open, here's the message to send to your runner:\n\nPhone: ${phoneNumber}\nMessage: ${message}`);
+            }, 1000);
+        }
+    </script>
+</head>
+<body>
+    <div class="invoice-container">
+        <div class="header">
+            <h1><span class="beach-icon">🏖️</span>BEACH BROS SHARING</h1>
+            <p class="subtitle">Tax Invoice</p>
+            <div class="company-info">
+                1095 Sea Terrace Lane<br>
+                Costa Mesa 92627, United States
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="invoice-details">
+                <div class="bill-to">
+                    <div class="section-title">Bill To</div>
+                    <div class="info-row">
+                        <span class="info-label">Customer Name:</span>
+                        <span class="info-value">Kevin Livingston</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Location:</span>
+                        <span class="info-value">Seattle, WA</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Country:</span>
+                        <span class="info-value">United States</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Phone:</span>
+                        <span class="info-value">(555) 123-4567</span>
+                    </div>
+                </div>
+
+                <div class="invoice-info">
+                    <div class="section-title">Invoice Information</div>
+                    <div class="info-row">
+                        <span class="info-label">Invoice No:</span>
+                        <span class="info-value">25074ACM</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Issue Date:</span>
+                        <span class="info-value">6/18/2025</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Due Date:</span>
+                        <span class="info-value">6/18/2025</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Delivery Date:</span>
+                        <span class="info-value">6/22/2025</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="package-details">
+                <div class="package-title">🌴 Tommy Bahama Beach Package for 6 🌴</div>
+                
+                <div class="package-info">
+                    <div class="package-item">
+                        <div class="info-label">📅 Date:</div>
+                        <div class="info-value">Sunday, June 22nd, 2025</div>
+                    </div>
+                    <div class="package-item">
+                        <div class="info-label">📍 Delivery Location:</div>
+                        <div class="info-value">Drop Off Ayres Costa Mesa</div>
+                    </div>
+                    <div class="package-item">
+                        <div class="info-label">⏰ Party Time:</div>
+                        <div class="info-value">TBD</div>
+                    </div>
+                    <div class="package-item">
+                        <div class="info-label">👥 Group Size:</div>
+                        <div class="info-value">6 People</div>
+                    </div>
+                </div>
+
+                <div class="equipment-info">
+                    <div class="equipment-title">🏖️ Equipment Drop-Off Service</div>
+                    <p>Beach Bros Sharing will be dropping off your equipment at the Ayres Costa Mesa at your desired time. Please call or text the day prior so we can put it on the schedule.</p>
+                </div>
+            </div>
+
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Unit Price ($)</th>
+                        <th>Discount %</th>
+                        <th>Amount ($)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Drop Off Ayres CM - Tommy Bahama™ for 6 people</td>
+                        <td>1</td>
+                        <td class="amount">150.00</td>
+                        <td class="amount">0.00</td>
+                        <td class="amount">150.00</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="4"><strong>Total Due (USD)</strong></td>
+                        <td class="amount"><strong>$0.00</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="action-buttons">
+                <button class="action-btn calendar-btn" onclick="addToCalendar()">
+                    📅 Add to Google Calendar
+                </button>
+                <button class="action-btn text-btn" onclick="sendTextToRunner()">
+                    📱 Text Delivery Runner
+                </button>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #e3f2fd, #f0f8ff); border-radius: 8px;">
+                <p style="color: #00B4D8; font-weight: bold; font-size: 1.1em;">
+                    🌊 Thank you for choosing Beach Bros Sharing! 🌊
+                </p>
+                <p style="margin-top: 10px; color: #555;">
+                    Have an amazing beach day with your Tommy Bahama package!
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
